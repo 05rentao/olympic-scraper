@@ -1,0 +1,49 @@
+### Core ###
+# Compiled class files
+*.class
+
+# Build directories
+target/
+bin/
+build/
+out/
+
+# Logs
+*.log
+*.tmp
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.ipr
+*.iws
+*.ids
+*.orig
+*.swp
+
+# Allow only these specific .idea files
+!.idea/codeStyles/
+!.idea/scopes/
+
+### Maven ###
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+dependency-reduced-pom.xml
+
+### System ###
+.DS_Store
+Thumbs.db
+*.bak
+~$*
+
+### Your Project Specific ###
+# Ignore local test data
+*.csv
+*.json
+*.data
+
+# Keep these patterns just in case
+!**/src/main/**
+!**/src/test/**

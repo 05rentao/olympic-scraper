@@ -1,0 +1,34 @@
+How to run:
+    1. Requirements: Java 17+ and Maven installed
+    2. Run command: `mvn compile exec:java` from project root
+
+Problems:
+    The main difficulty was getting around the syntax for regex, for example, having
+    to figure out how to add quotes by using /" , and white spaces using //w*
+
+Overview of project:
+    I created the Parser class that handles gathering the groups, and implemented
+    functions that answers each question, in my ParserTester class, is where I create a
+    Parser object using the wiki url and call respective functions to answer each question.
+
+Question 1: List all past and present Olympic sports that start with the letter C?
+        [Canoeing, Cricket, Cycling]
+    The algorithm I used to find the answer to this question is using the basic
+    features of Pattern and Matcher class. Using the expression
+        <td><a\\b[^>]*title=\"(" + s + "\\w*) at the Summer Olympics\"[^>]*
+    I looked at the HTML file for the wiki page and found the pattern of how they
+    structured the sports section with the table, they typically started with
+        <td ... ><a...
+    and the name of the sport happened right after the next >
+    the sport can be multiple words, but followed by </a></td>
+    I used a lot of [^>]* type expressions to stop before the next >.
+
+    To make sure that it is the letter I imputed, I simply used string concatination
+    to add the parameter "s" to the expression.
+
+Q2: List all countries (full name, not country code) that have participated in the Olympics, but are
+now considered “obsolete”?
+
+
+
+
