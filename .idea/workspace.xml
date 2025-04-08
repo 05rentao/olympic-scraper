@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="a40ce11d-1c5a-4265-b677-31cf48f56b8c" name="Changes" comment="" />
+    <list default="true" id="a40ce11d-1c5a-4265-b677-31cf48f56b8c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ParserTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ParserTester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/URLGetter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/URLGetter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/readme" beforeDir="false" afterPath="$PROJECT_DIR$/src/readme" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;05rentao&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:05rentao/olympic-scraper.git&quot;,
+    &quot;accountId&quot;: &quot;ca38bcac-8c2c-49da-b3fe-30f251264eef&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2v2q28W0080zhq1YRep6ZT9HkAV" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -19,13 +51,44 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.ParserTester.executor": "Run",
+    "Application.URLTester.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/grace/OneDrive/Documents/Coding projects/1210/hw7-stub-files",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "C:/Users/grace/OneDrive/Documents/Coding projects/NETS 150/NETS HW3 Wiki/src/Main.java",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager" selected="Application.ParserTester">
+    <configuration name="ParserTester" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ParserTester" />
+      <module name="NETS HW3 Wiki" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="URLTester" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="URLTester" />
+      <module name="NETS HW3 Wiki" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ParserTester" />
+        <item itemvalue="Application.URLTester" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -42,7 +105,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743353308954</updated>
-      <workItem from="1743353310081" duration="2000" />
+      <workItem from="1743353310081" duration="17943000" />
+      <workItem from="1743403042709" duration="53000" />
+      <workItem from="1743523175629" duration="3401000" />
+      <workItem from="1743619839621" duration="3696000" />
+      <workItem from="1744075041417" duration="18212000" />
+      <workItem from="1744093531248" duration="6542000" />
     </task>
     <servers />
   </component>
@@ -52,11 +120,10 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>11</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.net.MalformedURLException" package="java.net" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

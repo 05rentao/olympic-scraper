@@ -21,10 +21,6 @@ out/
 *.orig
 *.swp
 
-# Allow only these specific .idea files
-!.idea/codeStyles/
-!.idea/scopes/
-
 ### Maven ###
 pom.xml.tag
 pom.xml.releaseBackup
@@ -37,12 +33,16 @@ dependency-reduced-pom.xml
 Thumbs.db
 *.bak
 ~$*
+.idea/
+
 
 ### Your Project Specific ###
 # Ignore local test data
 *.csv
 *.json
 *.data
+
+.idea/workspace.xml
 
 # Keep these patterns just in case
 !**/src/main/**

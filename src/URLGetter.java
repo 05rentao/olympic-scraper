@@ -66,6 +66,10 @@ public class URLGetter {
         return contents;
     }
 
+    public String getURL() {
+        return url.toString();
+    }
+
     //    public URL getRedirectURL() {
     //        try {
     //            if (httpConnection.getResponseCode() >=300 ||

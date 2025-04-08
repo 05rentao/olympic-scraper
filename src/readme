@@ -29,6 +29,112 @@ Question 1: List all past and present Olympic sports that start with the letter 
 Q2: List all countries (full name, not country code) that have participated in the Olympics, but are
 now considered “obsolete”?
 
+    [Australasia, Republic of China, Bohemia, Czechoslovakia, Saar, United Team of Germany,
+    East Germany, West Germany, Malaya, North Borneo, Netherlands Antilles, Russian Empire,
+    Soviet Union, Unified Team, ROC, Individual Neutral Athletes, Yugoslavia,
+    Independent Olympic Participants, Serbia and Montenegro, Czechoslovakia, British West Indies,
+    South Yemen, North Yemen]
+
+    I first found the URL to navigate to get to the actual participating countries by the following regex
+
+        <a href=\"([^\"]*)\" title=\"List of participating nations at the Summer Olympic Games\"
+
+    Which captured the format that the link appeared in the original webpage.
+    After navigating to the new page, I updated the variable content to generate the next
+    matchers with. I looked at the specific way that each obsolete country is formatted,
+    and noticed that they are colored with bgcolor="#e0e0e0", therefore, using this pattern, I used the
+    following regex to capture the name of the country.
+
+        <td align="left" bgcolor="#e0e0e0".*?title=[^>]*>([^<]+)</a>
+
+    As you can see, I matched to the table data <td>, and then the background color. Then, I used
+    .*? to non-greedily skip to the next occurrence of "title=", because i felt that was the next unique
+    element in the line I could jump to. After title, I skip to the next occurrence of > by [^>]*
+    and extract out anything from there to the next "<"
+
+List all countries that have won at least 6 silver medals in 2016.
+
+    [United States, Great Britain, China, Russia, Germany, Japan, France, Italy,
+    Australia, Netherlands, Brazil, Kenya, New Zealand, Denmark, Sweden, South Africa,
+    Azerbaijan]
+
+    By the same approach as the previous question, i navigated to the webpage
+    called "2016 Summer Olympics medal table" by explicitly pattern matching
+    against the phrase "\(year) Summer Olympics medal table ".
+
+    To which i found the pattern of <tr> title= >(country name)<\th></td>
+    immediately followed by numbers of medals. however, some countries has
+    symbols after the <\a> part, to accomodate this, i had to add .{0,1}
+    to include times when there is a symbol and not.
+
+    Next, I encountered a problem where I had to include "Independent Olympic Athletes"
+    but it was followed by a super script, and my simple approach of either
+    accounting for 1 or 0 letters failed. Additionally, if i simply scanned for
+    the next </th>, I would somehow end up with Michael Phelps as a country as
+    well. But finding out about the optionally contains expression was helpful
+        (?:<sup.*?</sup>)?
+    combined with .{0,1} I was able to catch all the cases. And the sum of all
+    countries in my scan was finally 86.
+
+    Once I got to that point, all i had to do was to check the number of silver
+    medals, which was relatively easy through arraylist's remove().
+
+List all countries that had podium sweeps in 2012.
+
+    [Italy, Jamaica, China]
+
+    In this algorithm podiumSweep(), I noticed that the xxxx summer olympics site had a section
+    for podium sweeps, so I created a regex in my alg that specifically looked for the "xxxx
+    Summer Olympics" sites. I did that by using the following regex
+
+        <li><a href=\"([^\"]+)\" title=\"" + year + " Summer Olympics\"
+
+    Which extracted the url, and handled the url change in the navigateWiki() function.
+    Next, I wanted to extract the information from the Medal Table, Podium sweeps section.
+    To do this, I simply looked for where the heading "Podium sweeps" occurred on the site
+    and extracted all the information up until the next section header, "Broadcasting," which
+    has the size of header 2 or h2. Therefore I used the regex below to extract all the text
+    between those 2 sections.
+
+        <h3 id="Podium_sweeps">Podium sweeps</h3>(.*?)h2
+
+    After extracting the section containing the information on medal sweeps, I simply looked
+    at the structure of the table and used the following regex to find when the country name
+    occurred and extract that out. Which I recognized that each entry must start with <tr> or table
+    row, and follow some characters away from title= Similar to the previous regex, we have
+
+        <tr><td.*?<td><span .*?title=[^>]*>([^<]+)</a>
+
+    And I was able to extract out all information.
+
+How many total medals has the United States won in Volleyball?
+
+    [6]
+
+    The algorithm for totalMedalSport() is similar to the previous, the first step is to find the page
+    corresponding with each sport. We do this by scanning the starting page, and using the following
+    regex to extract out the link.
+
+        <li><a href=\"([^\"]+)\" [^>]*>" + sport + "</a></li>
+
+    Additionally, I also extract out the "medal table" section for ease of regex. At this point,
+    I've abstracted the functionality of getting the section and updating the content to which the
+    matcher is constructed with is it's own function, getSection(). I use the following regex
+    command with this function to extract the medal tables section for any sport page.
+
+        <h[23] id="[^"]+">Medal table</h[23]>(.*?)<h[23]
+
+    Note that i use h[23], this is because depending on the page, the "medal table" can be an h2
+    header or an h3 header.
+    Next, to find the actual total number of medals the countries have won, we use the following regex
+    command.
+
+        <tr><td>\\d+</td><th.*?title=[^>]*>" + country + "</a>(?:.*?</span>)?</th><td>\\d+</td><td>\\d+</td><td>\\d+</td><td>(\\d+)</td></tr>
+
+    Note that we use an optional (?:.*?</span>)? again. This is because depending on the site, structure of
+    can be different.
+
+
 
 
 
