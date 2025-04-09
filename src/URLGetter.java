@@ -37,7 +37,9 @@ public class URLGetter {
             int code = httpConnection.getResponseCode();
             String message = httpConnection.getResponseMessage();
 
-            System.out.println(code + " : " +  message);
+            if (code < 200 || code > 299) {
+                System.out.println(code + " : " + message);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

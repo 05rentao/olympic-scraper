@@ -134,7 +134,108 @@ How many total medals has the United States won in Volleyball?
     Note that we use an optional (?:.*?</span>)? again. This is because depending on the site, structure of
     can be different.
 
+How many governing bodies of the past or present sports from the Summer Olympics are
+headquartered in Switzerland?
+
+        14
+
+    The algorithm for summerSportHeadQuarter() begins by locating the Wikipedia page for the
+    Association of Summer Olympic International Federations. To extract the URL for this page,
+    we use the following regex:
+
+        <a href="([^\"]*)" title=[^>]*>Association of Summer Olympic International Federations</a>
+
+    Once on this nexgt page, I extract only the relevant section of the content containing the member
+    federations by using a function i defined called "getSection()" Where I input a some regex that extracts
+    a whole section.
+
+        <h2 id=\"[^\"]+\">Members</h2>(.*?)<h2
+
+    Here, it extracts all outputs in in the members section. To which i will extract the website redirects
+    and the name of the country with the following regex.
+
+        <tr>\\s*<td><a [^>]+>[^<]*</a></td>\\s*<td><a href=\"([^\"]+)\" title=\"[^\"]+\">([^<]*)</a>
+
+    Then, I add the link, name of the country, into lists. Using a for loop, I update the url and the
+    the corresponding content, but i match all the subpages in the arraylist with the following
+    regex pattern
+
+        <tr><th [^>]*>Headquarters</th>(?:.*?Country</th>)?<td class=\"infobox[^\"]+\">.*?<a href=[^>]+>([^<]+)</a>(?:, ([^<]+))?<"
+
+    Finally. In this step we get the specific country names, and we find that there to be existing
+
+Among all Summer Olympics hosted in the United States since 1960, how many countries did the
+torch relay that covered the longest total distance pass through?
+
+        Year 1984, 2 countries.
+
+    I approached this problem by first considering the wikipage it is on, and navigating to
+    the according page. In this case, this is the page titled "List of Olympic torch relays."
+    Using regex and my navigateWiki() function, I arrive at the next site.
+
+    My next step is the retrive the section "Summer Olympic Games" specifically from the document
+    so that it's easier for me to parse, without having to worry about the winter games. To do that
+    I used the regex command
+
+        <h2 id=\"Summer_Olympic_Games\">Summer Olympic Games</h2>(.*?)<h2
+
+    At this point, I noticed that the infomation directly in the graph is not yet helpful, but the
+    links it supplies is much more helpful. Therefore, I navigate to these links in the table
+    And to do that, I used the following regex espression, since the link typically was after
+    the phrase "Main article."
+
+        Main article: <a href="(/wiki/\d{4}_Summer_Olympics_torch_relay)"[^>]*>(\d{4}) Summer Olympics torch relay
+
+    After extracting an ArrayList of strings, I simply iterate through the list, and visit each
+    corresponding webpage, and scrape information aboregarding the Relay. And it turns out, there is
+    some useful information in the webpage, specifically, it follows right before the "Countries visited,"
+    label. However, in making our algorithm more dynamic, we would also need to check that the
+    country the game is held at is the country we wanted to look at in the problem, in this case,
+    we extract also the country of the host city, and make sure that it is "United States" in this case,
+    using the following command.
+
+        Host city</th><td [^>]*>(?:<a href=.*?</a>)*, ([^<]+)</td></tr>.*?Countries visited</th><td class="infobox-data">([^<]+)</td></tr>
+
+    Note that here I've extracted out the entire text consisteing of commas that separate the country
+    strings, therefore, we create a new simple expression [^,]+ to separate each country element, so that
+    we are able to count the size easier to answer this question. Additionally, I've also incorporated the
+    ability to choose the year by using an if statement and simply checking
+
+        Integer.parseInt(years.get(i)) > year
+
+A question that I think is interesting is, "Which country is the unluckiest and is likely to have the most
+scandals, controversies and incidents?" I came up with this questio upon looking through the related wiki pages.
+
+    To begin this problem, I navigate to the page using navigateWiki() using the followin regex command
+
+        <a href="([^"]*)" [^>]*>List of Olympic Games scandals and controversies</a></li>
+
+    I then create a treemap that would store the number of counts per country. Where a count is defined as a list
+    item, where it represent some scandal, controversy, or incidents. Thus after creating the map and initializing
+    values. I got to work with regex that pattern matched to the subheadings "xxxx _____ Olympics – _____, ____."
+    In addition to this, I also purposefully extended the pattern from the end of /div> to the next <div. This is
+    because the content in between is the unordered list, and my intent here is to count the total number of bullet
+    points per country. Therefore, after extracting the substring that contains the unordered list using the below.
+
+        <div class="mw-heading mw-heading3"><h3[^>]*>.*?Olympics.*?, ([^<,]+)</h3>.*?/div>(.*?)<div
+
+    I then took the output from the second group(unordered list) and then pattern matched it again to the pattern <li>
+    directly, and counting the total number of times it appears. I did this via a forloop, while using the map to keep
+    track of the number of bullet points each hosting has.
+
+        The answer to this question, after returning the whole map, is interestingly, Germany with 10 separate bullet
+        points not even counting west Germany. This can potentially be biased due to the frequency in which Germany
+        hosts and not neccesarily reflective of the German people.
+
+    {Austria=1, Belgium=3, Brazil=0, Canada=0, China=0, France=4, Germany=10, Greece=8, Italy=2, Japan=5, Netherlands=1, Republic of Korea=4, Russia=0, Soviet Union=4, Sweden=4, Switzerland=2, USA=2, United Kingdom=4, United States=5, West Germany=6, Yugoslavia=0}
 
 
 
 
+
+
+
+
+
+For the actual implementation of the interfece the user interacts with. I kind of just came up with
+a basic chatbox concept.

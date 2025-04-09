@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -73,13 +74,11 @@ public class Parser {
 
 
     public ArrayList<String> sportStartWith(String s) {
-        if (s.length() > 1 || !Character.isLetter(s.charAt(0))) {
-            throw new IllegalArgumentException("sportStartWith: not a single letter");
+        resetURL();
+        if (s.length() > 1 || !s.matches("^[A-Z]$")) {
+            throw new IllegalArgumentException("Input must be a single letter A–Z.");
         }
-//<td style="background: #D3D3D3;"><a href="/wiki/Jeu_de_paume_at_the_1908_Summer_Olympics" title="Jeu de paume at the 1908 Summer Olympics">Jeu de paume</a></td>
-
         newExpression("<td[^>]*><a\\b[^>]*>(" + s + "[^<]+)</a></td>");
-
         return groups(1);
     }
 
@@ -105,6 +104,10 @@ public class Parser {
     }
 
     public ArrayList<String> silverMetalsByYear(int metals, int year) {
+        resetURL();
+        if (year % 4 != 0) {
+            throw new IllegalArgumentException("not a valid year");
+        }
         navigateWiki("<a href=\"([^\"]*)\" title=\"" + year + " Summer Olympics medal table\"");
         String regex = "<tr><t.*?title=[^>]*>([^<]+)</a>(?:<sup.*?</sup>)?.{0,1}</th><td>\\d+</td><td>(\\d+)</td>";
         //String regex = "<tr><td>.*?<a href=[^>]+>([^<]+)</a></th><td>\\d+</td><td>(\\d+)</td>";
@@ -134,6 +137,11 @@ public class Parser {
 
     public ArrayList<String> podiumSweep(String year) {
         resetURL();
+        if (Integer.parseInt(year) % 4 != 0) {
+            throw new IllegalArgumentException("not a valid year");
+        }
+
+        resetURL();
         navigateWiki("<li><a href=\"([^\"]+)\" title=\"" + year + " Summer Olympics\"");
 
         getSection("<h3 id=\"Podium_sweeps\">Podium sweeps</h3>(.*?)h2");
@@ -141,7 +149,7 @@ public class Parser {
         String regex = "<tr><td.*?<td><span .*?title=[^>]*>([^<]+)</a>";
         newExpression(regex);
         ArrayList<String> countries = groups(1);
-        System.out.println(countries.size());
+        // System.out.println(countries.size());
         return countries;
     }
 
@@ -165,7 +173,7 @@ public class Parser {
         newExpression(regex);
         try {
             ArrayList<String> countries = groups(1);
-            System.out.println(countries.size());
+            // System.out.println(countries.size());
             return countries;
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("country not matched");
@@ -179,37 +187,141 @@ public class Parser {
 
         getSection("<h2 id=\"[^\"]+\">Members</h2>(.*?)<h2");
 
-        String regex = "<tr>\\w*<td><a href=\"[^\"]+\" title=\"[^\"]+\">[^<]*</a</td>\\w+" +
-                "<td><a href=\"([^\"]+)\" title=\"[^\"]+\">[^<]*</a></td>";
-        newExpression(regex);
-        ArrayList<String> links = groups(1);
+        String linkRegex = "<tr>\\s*<td><a [^>]+>[^<]*</a></td>\\s*<td><a href=\"([^\"]+)\" title=\"[^\"]+\">([^<]*)</a>";
+        newExpression(linkRegex);
+        ArrayList<String> links = new ArrayList<>();
+        ArrayList<String> name = new ArrayList<>();
+        while (m.find()) {
+            links.add(m.group(1));
+            // System.out.println(m.group(1));
+            name.add(m.group(2));
+        }
 
         ArrayList<String> sports = new ArrayList<>();
+        for (int i = 0; i < links.size(); i++) {
+            String newUrl = "https://en.wikipedia.org" + links.get(i);
+            url = new URLGetter(newUrl);
+            updateURL();
 
-        for (String link : links) {
-            navigateWiki(link);
             m = p.matcher(this.content);
-            String sport = "";
+            String sport = name.get(i);
             String hq = "";
 
-            String regexHQ = "";
-            // TODO: work on this regex to find headquarters for all sites.
+            String regexHQ = "<tr><th [^>]*>Headquarters</th>(?:.*?Country</th>)?" +
+                    "<td class=\"infobox[^\"]+\">.*?<a href=[^>]+>([^<]+)</a>(?:, ([^<]+))?<";
+
             newExpression(regexHQ);
 
             if (m.find()) {
-                sport = m.group(1);
-                hq = m.group(2);
+                hq = m.group(1);
+                if (m.group(2) != null) {
+                    hq = m.group(2);
+                }
+                // System.out.println("summerSportHeadQuarter for " + sport + ": " + hq);
             } else {
-                throw new NoSuchElementException("summerSportHeadQuarter: cannot match sport/hq");
+                // System.out.println("summerSportHeadQuarter: cannot match hq for " + sport);
             }
 
-            if (hq.equals("Lausanne")) {
+            if (hq.equals(country)) {
                 sports.add(sport);
             }
         }
-
         return sports.size();
 
+    }
+
+    public int countriesLongestRelay(String country, int year) {
+        if (year % 4 != 0) {
+            throw new IllegalArgumentException("not a valid year");
+        }
+        resetURL();
+        navigateWiki("<a href=\"([^\"]*)\" title=\"List of Olympic torch relays\">Torch relays</a></li>");
+
+        getSection("<h2 id=\"Summer_Olympic_Games\">Summer Olympic Games</h2>(.*?)<h2");
+
+        String regexLinks = "Main article: <a href=\"(/wiki/\\d{4}_Summer_Olympics_torch_relay)\"[^>]*>(\\d{4}) Summer Olympics torch relay";
+        // wiki/1980_Summer_Olympics_torch_relay"
+        ArrayList<String> host = new ArrayList<>();
+        ArrayList<String> links = new ArrayList<>();
+        ArrayList<String> years = new ArrayList<>();
+        newExpression(regexLinks);
+
+        while (m.find()) {
+            links.add(m.group(1));
+            years.add(m.group(2));
+        }
+
+        // getting the list of countries for each relay separated by comma
+        String regexCountries = "Host city</th><td [^>]*>(?:<a href=.*?</a>)*, ([^<]+)</td></tr>.*?Countries visited</th><td class=\"infobox-data\">([^<]+)</td></tr>";
+        newExpression(regexCountries);
+        ArrayList<String> countries = new ArrayList<>();
+        for (int i = 0; i < links.size(); i++) {
+            String newUrl = "https://en.wikipedia.org" + links.get(i);
+            url = new URLGetter(newUrl);
+            updateURL();
+            m = p.matcher(this.content);
+
+            String countryLst = "";
+            while (m.find()) {
+                if (m.group(1).equals(country) && Integer.parseInt(years.get(i)) > year) {
+                    host.add(m.group(1));
+                    countryLst = m.group(2);
+                    years.add(years.get(i));
+                }
+//                if (countryLst == null) {
+//                    System.out.println(years.get(i) + ": " + links.get(i) + " not matched ");
+//                }
+            }
+            countries.add(countryLst);
+        }
+
+
+        // getting and counting individual countries
+        String regex = "[^,]+";
+        p = Pattern.compile(regex);
+        int max = 0;
+        String maxYear = null;
+        for (int i = 0; i < countries.size(); i++) {
+            int count = 0;
+            m = p.matcher(countries.get(i));
+            while (m.find()) {
+                count++;
+                if (count > max) {
+                    max = count;
+                    maxYear = years.get(i);
+                }
+            }
+        }
+        System.out.println("maxYear: " + maxYear);
+        return max;
+    }
+
+    public Map<String, Integer> mostControversial() {
+        resetURL();
+        navigateWiki("<a href=\"([^\"]*)\" [^>]*>List of Olympic Games scandals and controversies</a></li>");
+
+        TreeMap<String, Integer> freqMap = new TreeMap<>();
+        ArrayList<String> countries = new ArrayList<>();
+        ArrayList<String> countryListItems = new ArrayList<>();
+        String regex = "<div class=\"mw-heading mw-heading3\"><h3[^>]*>.*?Olympics.*?, ([^<,]+)</h3>.*?/div>(.*?)<div";
+        newExpression(regex);
+        while (m.find()) {
+            countries.add(m.group(1));
+            countryListItems.add(m.group(2));
+        }
+
+        // counting the number of list items for each olympic, and associating it with the country hosting.
+        p = Pattern.compile("<li>");
+        for (int i = 0; i < countries.size(); i++) {
+            content = countryListItems.get(i);
+            m = p.matcher(this.content);
+            int liCount = 0;
+            while (m.find()) {
+                liCount++;
+            }
+            freqMap.put(countries.get(i), freqMap.getOrDefault(countries.get(i), 0) + liCount);
+        }
+        return freqMap;
     }
 
 }

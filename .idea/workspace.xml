@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a40ce11d-1c5a-4265-b677-31cf48f56b8c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ParserTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ParserTester.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/URLGetter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/URLGetter.java" afterDir="false" />
@@ -110,12 +109,23 @@
       <workItem from="1743523175629" duration="3401000" />
       <workItem from="1743619839621" duration="3696000" />
       <workItem from="1744075041417" duration="18212000" />
-      <workItem from="1744093531248" duration="6542000" />
+      <workItem from="1744093531248" duration="33790000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -126,5 +136,10 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="countries.get(i)" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
